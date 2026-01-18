@@ -1,0 +1,73 @@
+\documentclass{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{geometry}
+\usepackage{listings}
+\usepackage{xcolor}
+\geometry{margin=1in}
+\lstdefinestyle{py}{
+  language=Python,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{orange},
+  breaklines=true,
+  showstringspaces=false,
+}
+\begin{document}
+\section*{Pseudocode for Question 6 and 7}
+\subsection*{\texttt{f(P, x, y, n)}}
+\begin{lstlisting}[basicstyle=\ttfamily\small]
+Input: transition matrix P, states x,y (1-based), time n >= 0
+Validate: n non-negative; P is square; x,y in 1..N
+A := numeric array(P)
+An := matrix_power(A, n)
+return An[x-1, y-1]
+\end{lstlisting}
+
+\subsection*{\texttt{g(P, x, n, seed=None)}}
+\begin{lstlisting}[basicstyle=\ttfamily\small]
+Input: P, initial state x (1-based), steps n, optional seed
+Validate: P square; x in 1..N; n >= 0
+If n == 0: return []
+rng := RNG(seed)
+current := x - 1
+path := []
+for i in 1..n:
+  probs := A[current]
+  next := rng.choice(0..N-1, p=probs)
+  path.append(next + 1)
+  current := next
+return path
+\end{lstlisting}
+
+\subsection*{approx\_p(P, x, y, n, trials, seed=None)}
+\begin{lstlisting}[basicstyle=\ttfamily\small]
+If n == 0: return 1.0 if x == y else 0.0
+Validate: trials > 0
+rng := RNG(seed)
+count := 0
+for t in 1..trials:
+  subseed := rng.integers()
+  path := g(P, x, n, seed=subseed)
+  if path[-1] == y: count += 1
+return count / trials
+\end{lstlisting}
+
+\subsection*{Example flow}
+\begin{lstlisting}[basicstyle=\ttfamily\small]
+Define P, x, y, n
+exact := f(P, x, y, n)
+estimate := approx_p(P, x, y, n, trials=20000, seed=42)
+sample := g(P, x, n, seed=123)
+Print exact, estimate, sample
+\end{lstlisting}
+
+\section*{Code}
+\subsection*{markov.py}
+\lstinputlisting[style=py]{markov.py}
+
+\subsection*{example.py}
+\lstinputlisting[style=py]{example.py}
+
+\end{document}
