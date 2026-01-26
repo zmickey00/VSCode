@@ -1,0 +1,92 @@
+% Problem 1 report
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\begin{document}
+\title{Problem 1: Data Generation and OLS/HC1 Analysis}
+\author{}
+\date{\today}
+
+\textbf{Problem 1: Data Generation and OLS/HC1 Analysis}
+
+\section*{Question 1: Single dataset (n=10)}
+The first simulated sample printed by the script is shown below.
+\begin{verbatim}
+       X        Y
+0.010879 1.011936
+0.632213 0.667500
+2.287925 6.015512
+1.193974 1.392711
+1.920231 4.840979
+1.577104 2.792096
+0.363536 1.920486
+1.541952 1.524311
+0.683405 1.470323
+0.677611 1.906487
+\end{verbatim}
+
+\section*{Question 2: OLS and robust SEs (n=10)}
+Using the sample above, I ran \verb|ols_analysis.py| and pasted the exact console output below.
+\begin{verbatim}
+OLS estimates (beta0, beta1): [0.25770501 1.92539412]
+Robust SEs (se0, se1): [0.53339976 0.52519067]
+95% CI for beta1: [0.8960, 2.9548] (tcrit=1.9600)
+\end{verbatim}
+
+\section*{Question 3: Does the CI contain the true $\beta_1=1$?}
+Yes. The 95\% CI $[0.8960,\ 2.9548]$ contains $1$.
+
+\section*{Question 4: Repeat 1000 times (n=10)}
+When the experiment is repeated $1000$ times (using the code in \verb|problem1.py|), I used the saved summary and pasted the exact contents of \verb|coverage_summary.csv| below.
+\begin{verbatim}
+n,covered,pct
+10,797,79.7
+50,910,91.0
+100,922,92.2
+500,946,94.6
+1000,957,95.7
+\end{verbatim}
+The histogram of $\hat{\beta}_1$ for $n=10$ is included below (file: \verb|beta1_hist_n10_t1000.png|).
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.7\textwidth]{beta1_hist_n10_t1000.png}
+\caption{Histogram of $\hat{\beta}_1$ (n=10, 1000 trials)}
+\end{figure}
+
+\section*{Question 5: Repeats for other sample sizes}
+The code repeated the experiment for $n\in\{10,50,100,500,1000\}$ and saved a summary in \verb|coverage_summary.csv|. The results are:
+\begin{table}[h]
+\centering
+\caption{Coverage summary (1000 trials each)}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+$n$ & covered & pct \\
+\midrule
+10 & 797 & 79.70 \\
+50 & 910 & 91.00 \\
+100 & 922 & 92.20 \\
+500 & 946 & 94.60 \\
+1000 & 957 & 95.70 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section*{Short answers}
+\begin{itemize}
+  \item Q1: Sample shown in table above (printed by the script).
+  \item Q2: OLS estimates and HC1 SEs listed in Section 2.
+  \item Q3: 95\% CI contains $\beta_1=1$ for the analyzed sample.
+  \item Q4: Empirical coverage for $n=10$ is 79.70\% (797/1000).
+  \item Q5: Coverage improves with sample size (see table); e.g. 91.0\% for $n=50$, 92.2\% for $n=100$, 94.6\% for $n=500$, and 95.7\% for $n=1000$.
+\end{itemize}
+
+% \section*{How to compile}
+% From the directory \verb|ECON690PS1|, run:
+% \begin{verbatim}
+% pdflatex problem1_report.tex
+% \end{verbatim}
+
+\textbf{The rest of the PS starts from next page.}
+\end{document}
